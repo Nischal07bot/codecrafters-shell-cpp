@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 
 .history/
 
 course-definition-tester
+=======
+>>>>>>> 4a8dc82bd329e1c88703a3e389613e88834c4fce
 ##### Windows
 # Windows thumbnail cache files
 Thumbs.db
@@ -1048,4 +1051,8 @@ dkms.conf
 # Raspberry Pi Pico disassembler file
 *.dis
 
+<<<<<<< HEAD
 vcpkg_installed
+=======
+vcpkg_installed
+>>>>>>> 4a8dc82bd329e1c88703a3e389613e88834c4fce

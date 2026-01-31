@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # build-your-own-shell
 
@@ -10,6 +11,9 @@ Read the README there for information on how to contribute language support &
 submit solutions.
 
 [![progress-banner](https://backend.codecrafters.io/progress/shell/7873b0ec-59cd-49e3-b8b7-71902597fd11)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+=======
+[![progress-banner](https://backend.codecrafters.io/progress/shell/3f4fdbb4-f4cd-482b-8091-b4afdb7ce2be)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+>>>>>>> 4a8dc82bd329e1c88703a3e389613e88834c4fce
 
 This is a starting point for C++ solutions to the
 ["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
@@ -43,4 +47,7 @@ Note: This section is for stages 2 and beyond.
    `src/main.cpp`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4a8dc82bd329e1c88703a3e389613e88834c4fce
