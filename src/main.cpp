@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unistd.h>
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
@@ -23,6 +24,7 @@ int main() {
     }
     else if(command.substr(0, 5) == "type ")
     {
+      //heck for builtin commands
       std::string check=command.substr(5);
       bool flag=false;
       for(int i=0;i<builtin.size();i++)
@@ -34,45 +36,45 @@ int main() {
           break;
         }
       }
-      if(!flag)
+      if (!flag) 
       {
-        std::string path=getenv("PATH");
-        int sz=path.size();
-        std::string dir="";
-        int j=0;
-        while(j<sz)
-        {
-          if(path[j]==':')
-          {
-            std::string full_path=dir+"/"+check;
-            FILE *file;
-            if((file=fopen(full_path.c_str(),"r"))!=NULL)
-            {
-              std::cout << check << " is " << full_path << std::endl;
-              fclose(file);
-              break;
-            }
-            dir="";
-          }
-          else
-          {
-            dir+=path[j];
-          }
-          j++;
+      char* env = getenv("PATH");
+      if (!env) continue;
 
-      }
-      if (!dir.empty()) 
+      std::string path(env);
+      std::string dir = "";
+
+      for (int j = 0; j < path.size(); j++) 
       {
-        std::string full_path = dir + "/" + check;
-        FILE *file;
-        if ((file = fopen(full_path.c_str(), "r")) != NULL) 
-        {
-        std::cout << check << " is " << full_path << std::endl;
-        fclose(file);
+        if (path[j] == ':') {
+            std::string full_path = dir + "/" + check;
+            if (access(full_path.c_str(), X_OK) == 0) 
+            {
+                std::cout << check << " is " << full_path << std::endl;
+                flag = true;
+                break;
+            }
+            dir.clear();
+        } else {
+            dir += path[j];
         }
       }
-      continue;
+      if (!flag && !dir.empty()) 
+      {
+          std::string full_path = dir + "/" + check;
+          if (access(full_path.c_str(), X_OK) == 0) {
+              std::cout << check << " is " << full_path << std::endl;
+              flag=true;
+          }
+      }
+      if(!flag)
+      {
+        std::cout << check << ": not found" << std::endl;
+      }
     }
+      continue;
+  }
+
     std::cout << command << ": command not found" << std::endl;
   }
 
