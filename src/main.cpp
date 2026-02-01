@@ -18,6 +18,7 @@ int main() {
       std::string echo_text;
       echo_text = command.substr(5);
       std::cout << echo_text << std::endl;
+      continue;
     }
     std::cout << command << ": command not found" << std::endl;
   }
