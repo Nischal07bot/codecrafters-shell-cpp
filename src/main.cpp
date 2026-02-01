@@ -36,7 +36,30 @@ int main() {
       }
       if(!flag)
       {
-        std::cout<<check<<": not found"<<std::endl;
+        std::string path=getenv("PATH");
+        int sz=path.size();
+        std::string dir="";
+        int j=0;
+        while(j<sz)
+        {
+          if(path[j]==':')
+          {
+            std::string full_path=dir+"/"+check;
+            FILE *file;
+            if((file=fopen(full_path.c_str(),"r"))!=NULL)
+            {
+              std::cout << check << " is " << full_path << std::endl;
+              fclose(file);
+              break;
+            }
+            dir="";
+          }
+          else
+          {
+            dir+=path[j];
+          }
+          j++;
+
       }
       continue;
     }
