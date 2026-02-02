@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sstream>
 #include <sys/wait.h>
+#define BUFFER_SIZE 1024
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
@@ -76,6 +77,16 @@ int main() {
     }
       continue;
   }
+  else if(command.substr(0,4)=="pwd ")
+  {
+    char cwd[BUFFER_SIZE];
+    if (getcwd(cwd, sizeof(cwd)) != nullptr) {
+        std::cout << cwd << std::endl;
+    } else {
+        std::cerr << "pwd: error retrieving current directory" << std::endl;
+    }
+    continue;
+  }
 
     //std::cout << command << ": command not found" << std::endl;
     pid_t pid=fork();
@@ -103,7 +114,7 @@ int main() {
       //parent process
       waitpid(pid, nullptr, 0);
     }
-    
+
   }
 
 }
