@@ -77,7 +77,7 @@ int main() {
     }
       continue;
   }
-  else if(command.substr(0,4)=="pwd ")
+  else if(command.substr(0,3)=="pwd")
   {
     char cwd[BUFFER_SIZE];
     if (getcwd(cwd, sizeof(cwd)) != nullptr) {
