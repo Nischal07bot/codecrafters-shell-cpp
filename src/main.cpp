@@ -11,7 +11,7 @@ int main() {
   std::cerr << std::unitbuf;
 
   //TODO: Uncomment the code below to pass the first stage
-  std::vector<std::string> builtin={"exit","echo","type"};
+  std::vector<std::string> builtin={"exit","echo","type","pwd"};
   while(true){
     start:std::cout << "$ ";
   
