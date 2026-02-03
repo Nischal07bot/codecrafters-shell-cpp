@@ -87,7 +87,7 @@ int main() {
     }
     continue;
   }
-  else if(command.subs(0,3)=="cd ")
+  else if(command.substr(0,3)=="cd ")
   {
     std::string path=command.substr(3);
     if(!path.empty() && path[0]=='/')
