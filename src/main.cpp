@@ -97,6 +97,7 @@ int main() {
       {
         std::cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
       }
+      continue;
     }
     if(chdir(path.c_str())!=0)
     {
