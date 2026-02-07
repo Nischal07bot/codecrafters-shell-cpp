@@ -5,6 +5,36 @@
 #include <sstream>
 #include <sys/wait.h>
 #define BUFFER_SIZE 1024
+std::vector<std::string> parse_command(const std::string& command) {
+    std::vector<std::string> args;
+    std::string current;
+    bool in_quotes = false;
+
+    for (size_t i = 0; i < command.size(); i++) {
+        char c = command[i];
+
+        if (c == '\'') {
+            in_quotes = !in_quotes;  // toggle quote mode
+        } 
+        else if (c == ' ' && !in_quotes) {
+            if (!current.empty()) {
+                args.push_back(current);
+                current.clear();
+            }
+        } 
+        else {
+            current.push_back(c);
+        }
+    }
+
+    if (!current.empty()) {
+        args.push_back(current);
+    }
+
+    return args;
+}
+
+
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
@@ -17,18 +47,21 @@ int main() {
   
     std::string command;
     std::getline(std::cin, command);
+    std::vector<std::string> args = parse_command(command);
     if(command == "exit") return 0;
-    else if(command.substr(0, 5) == "echo ")
-    {
-      std::string echo_text;
-      echo_text = command.substr(5);
-      std::cout << echo_text << std::endl;
-      continue;
+    if (!args.empty() && args[0] == "echo") {
+        for (int i = 1; i < args.size(); i++) {
+            if (i > 1) std::cout << " ";
+            std::cout << args[i];
+        }
+        std::cout << std::endl;
+        continue;
     }
-    else if(command.substr(0, 5) == "type ")
+
+    else if(args[0] == "type" && args.size() > 1)
     {
       //heck for builtin commands
-      std::string check=command.substr(5);
+      std::string check=args[1];
       bool flag=false;
       for(int i=0;i<builtin.size();i++)
       {
@@ -77,7 +110,7 @@ int main() {
     }
       continue;
   }
-  else if(command.substr(0,3)=="pwd")
+  else if(args[0] == "pwd")
   {
     char cwd[BUFFER_SIZE];
     if (getcwd(cwd, sizeof(cwd)) != nullptr) {
@@ -87,9 +120,9 @@ int main() {
     }
     continue;
   }
-  else if(command.substr(0,3)=="cd ")
+  else if(args[0] == "cd" && args.size() > 1)
   {
-    std::string path=command.substr(3);
+    std::string path=args[1];
     char *home=getenv("HOME");
     if(path=="~")
     {
@@ -108,14 +141,6 @@ int main() {
 
     //std::cout << command << ": command not found" << std::endl;
     pid_t pid=fork();
-    std::vector<std::string> args;
-    std::stringstream iss(command);
-    std::string token;
-    while(iss >> token)
-    {
-      args.push_back(token);
-    }
-    if (args.empty()) continue;
     std::vector<char*> argv;
     for (auto &s : args) {
       argv.push_back(const_cast<char*>(s.c_str()));
