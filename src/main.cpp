@@ -61,6 +61,16 @@ int main() {
           j++;
 
       }
+      if (!dir.empty()) 
+      {
+        std::string full_path = dir + "/" + check;
+        FILE *file;
+        if ((file = fopen(full_path.c_str(), "r")) != NULL) 
+        {
+        std::cout << check << " is " << full_path << std::endl;
+        fclose(file);
+        }
+      }
       continue;
     }
     std::cout << command << ": command not found" << std::endl;
