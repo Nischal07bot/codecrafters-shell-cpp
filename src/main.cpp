@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
+#include <sstream>
+#include <sys/wait.h>
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
@@ -75,7 +77,33 @@ int main() {
       continue;
   }
 
-    std::cout << command << ": command not found" << std::endl;
+    //std::cout << command << ": command not found" << std::endl;
+    pid_t pid=fork();
+    std::vector<std::string> args;
+    std::stringstream iss(command);
+    std::string token;
+    while(iss >> token)
+    {
+      args.push_back(token);
+    }
+    if (args.empty()) continue;
+    std::vector<char*> argv;
+    for (auto &s : args) {
+      argv.push_back(const_cast<char*>(s.c_str()));
+    }
+    argv.push_back(nullptr);
+    if(pid==0)
+    {
+      //child process
+      execvp(argv[0], argv.data());
+      std::cout << argv[0] << ": command not found" << std::endl;
+      _exit(1);
+    }
+    else{
+      //parent process
+      waitpid(pid, nullptr, 0);
+    }
+    
   }
 
 }
