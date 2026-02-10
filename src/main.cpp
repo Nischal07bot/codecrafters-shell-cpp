@@ -11,7 +11,7 @@ int main() {
   std::cerr << std::unitbuf;
 
   //TODO: Uncomment the code below to pass the first stage
-  std::vector<std::string> builtin={"exit","echo","type","pwd"};
+  std::vector<std::string> builtin={"exit","echo","type","pwd","cd"};
   while(true){
     start:std::cout << "$ ";
   
@@ -84,6 +84,18 @@ int main() {
         std::cout << cwd << std::endl;
     } else {
         std::cerr << "pwd: error retrieving current directory" << std::endl;
+    }
+    continue;
+  }
+  else if(command.subs(0,3)=="cd ")
+  {
+    std::string path=command.substr(3);
+    if(!path.empty() && path[0]=='/')
+    {
+      if(chdir(path.c_str())!=0)
+      {
+        cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
+      }
     }
     continue;
   }
