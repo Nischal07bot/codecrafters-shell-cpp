@@ -90,12 +90,9 @@ int main() {
   else if(command.substr(0,3)=="cd ")
   {
     std::string path=command.substr(3);
-    if(!path.empty() && path[0]=='/')
+    if(chdir(path.c_str())!=0)
     {
-      if(chdir(path.c_str())!=0)
-      {
-        std::cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
-      }
+      std::cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
     }
     continue;
   }
