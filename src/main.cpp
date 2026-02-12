@@ -90,6 +90,14 @@ int main() {
   else if(command.substr(0,3)=="cd ")
   {
     std::string path=command.substr(3);
+    char *home=getenv("HOME");
+    if(path=="~")
+    {
+      if(chdir(home)!=0)
+      {
+        std::cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
+      }
+    }
     if(chdir(path.c_str())!=0)
     {
       std::cout<<"cd: "<<path<<": No such file or directory"<<std::endl;
