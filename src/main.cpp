@@ -8,15 +8,19 @@
 std::vector<std::string> parse_command(const std::string& command) {
     std::vector<std::string> args;
     std::string current;
-    bool in_quotes = false;
+    bool in_single_quotes = false;
+    bool in_double_quotes = false;
 
     for (size_t i = 0; i < command.size(); i++) {
         char c = command[i];
 
-        if (c == '\'') {
-            in_quotes = !in_quotes;  // toggle quote mode
+        if (c == '\'' && !in_double_quotes) {
+            in_single_quotes = !in_single_quotes;  // toggle single-quote mode
         } 
-        else if (c == ' ' && !in_quotes) {
+        else if (c == '"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;  // toggle double-quote mode
+        } 
+        else if ((c == ' ' || c == '\t') && !in_single_quotes && !in_double_quotes) {
             if (!current.empty()) {
                 args.push_back(current);
                 current.clear();
